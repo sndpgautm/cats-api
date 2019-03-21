@@ -3,13 +3,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path');
-
-//Importing the modules
+//Importing custom modules
 const postRoute = require('./functions/postRoute.js');
 const routes = require('./functions/routes.js');
-
-
 //Parse Application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false}));
 //Parse application/JSON
@@ -22,7 +18,6 @@ mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${proce
 },err => {
     console.log('Connection to db failed: ' + err);
 });
-
 
 //Handle routing 
 routes(app);
