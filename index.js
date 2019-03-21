@@ -1,20 +1,20 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+//Importing the modules
+const postRoute = require('./functions/postRoute.js');
+const routes = require('./functions/routes.js');
 
 
-var catSchema = new Schema({
-    name: String,
-    age: Number,
-    gender: String,
-    color: String,
-    weight: Number,
-});
+//Parse Application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false}));
+//Parse application/JSON
+app.use(bodyParser.json());
 
-var Cat = mongoose.model('Cat', catSchema);
 
 mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.DB_HOST}:${process.env.DB_PORT}/test`, {useNewUrlParser: true}).then(() => {
     console.log('Connected successfully.');
@@ -23,7 +23,8 @@ mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${proce
     console.log('Connection to db failed: ' + err);
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
 
+//Handle routing 
+routes(app);
+//Using PostRoute to post the data into db from the form
+postRoute(app);
