@@ -4,7 +4,7 @@ const sharp = require('sharp');
  // Using Sharp to resize the image
  const resize = (input, output, w, h) => {
     return new Promise((resolve, reject) => {
-        sharp({url:input, encoding:null}).resize(w, h).toFile(output, (err, info) => {
+        sharp(input).resize(w, h).toFile(output, (err, info) => {
             if(err)
             reject(err);
             if(info)

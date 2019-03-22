@@ -46,17 +46,21 @@ module.exports = (app) => {
     ////////////////////POST////////////////////
     // Reading the Form to create a new Cat 
     app.post('/add', upload.single('original'), (req, res, next) => {
-        const originalPath = path.join('media', 'original', req.file.filename);
-        //const thumbPath = path.join('media/thumbnails/', req.file.filename);
-        req.body.original = originalPath;
+        const originalPath = req.file.path;
+        const thumbPath = path.join('public', 'media', 'thumbnails', req.file.filename);
+        req.body.original =  path.join('media', 'thumbnails', req.file.filename);
         req.body.image = originalPath;
-        req.body.thumbnail = originalPath;
+        imgProcess.resize(originalPath, thumbPath, 400, 400).then((thumb) =>{
+            console.log(thumb);
+            req.body.thumbnail = thumb;
+        }).catch(err => console.log('Error in resize function:' + err));
+        
         req.body.time = Date.now();
         /*if(req.file.mimetype == 'png'){
             imgProcess.resize(originalPath, thumbPath, 512, 512);
             req.body.thumbnail = thumbPath;
         }*/
-        imgProcess.getSpot(path.join('public', originalPath))
+        imgProcess.getSpot(path.join(originalPath))
         .then((coords) =>{
             req.body.coordinates = coords;
             Cats.create(req.body, (err, obj) => {
