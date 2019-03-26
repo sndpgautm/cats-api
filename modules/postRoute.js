@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path'); 
@@ -10,24 +9,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // Parse application/JSON
 app.use(bodyParser.json());
 
-// Creating a Schema for the cat
-const Schema = mongoose.Schema;
-const catSchema = new Schema({
-    category: String,
-    title: String,
-    details: String,
-    coordinates : {
-        lat: Number,
-        lng: Number
-    },
-    original: String,
-    image : String,
-    thumbnail : String,
-    time: Date
-});
-
 // Using the created Cat Schema to create a cat instance
-const Cats = mongoose.model('Cats', catSchema);
+const Cat = require('../models/cat.js');
 
 //Using Multer to get the image file
 const storage = multer.diskStorage({
@@ -63,9 +46,9 @@ module.exports = (app) => {
         imgProcess.getSpot(path.join(originalPath))
         .then((coords) =>{
             req.body.coordinates = coords;
-            Cats.create(req.body, (err, obj) => {
+            Cat.create(req.body, (err, obj) => {
                 if (err){
-                    console.log('Error in creating the Cat in cats.create: ' + err)
+                    console.log('Error in creating the Cat in cat.create: ' + err)
                 } else {
                     console.log('Successfully added an entry to the database')
                     console.log(obj);
@@ -78,7 +61,7 @@ module.exports = (app) => {
 
     // Sending file to ./allCats URL to monitor the jSON arrays
     app.get('/allCats', (req, res) => {
-        Cats.find({}, (err, data) => {
+        Cat.find({}, (err, data) => {
             res.json(data);
         });
     });    
