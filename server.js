@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+
+app.enable('trust proxy');
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 //Importing custom modules
