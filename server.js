@@ -4,18 +4,23 @@ const app = express();
 //For jelastic ssl use
 app.enable('trust proxy');
 const mongoose = require('mongoose');
+const pug = require('pug');
 const bodyParser = require('body-parser');
+const path = require('path');
 //Importing custom modules
-const postRoute = require('./modules/postRoute.js');
+const catCRUD = require('./modules/catCRUD.js');
 const routes = require('./modules/routes.js');
 //Parse Application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 //Parse application/JSON
 app.use(bodyParser.json());
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'public/views'));
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-//Passport Authentication with local username and password
+//Passport Authentication with local username and password stored in .env file in jelastic server
 passport.use(
   new LocalStrategy((username, password, done) => {
     if (
@@ -25,7 +30,7 @@ passport.use(
       done(null, false, { message: 'Incorrect credentials.' });
       return;
     }
-    return done(null, { user: username }); // returned object usally contains something to identify the user.. returning password would be stupid
+    return done(null, { user: username }); // return object usally contains something to identify the user.. returning password would be stupid
   })
 );
 app.use(passport.initialize());
@@ -50,7 +55,7 @@ mongoose
     }
   );
 
-//For local dev disabling https conenction
+//For local dev disable https conenction
 //Only enable when delpolying to git and jelastic
 app.use((req, res, next) => {
   if (req.secure) {
@@ -62,6 +67,7 @@ app.use((req, res, next) => {
   }
 });
 
+//Athenticating using passport and postman to send login data
 app.post(
   '/login',
   passport.authenticate('local', {
@@ -72,10 +78,10 @@ app.post(
 );
 
 app.get('/test', (req, res) => {
-  res.send('login fail');
+  res.send('Login failed... Incorrect username and passowrd');
 });
 
 //Handle routing
 routes(app);
-//Using PostRoute to post the data into db from the form
-postRoute(app);
+//Using catCRUD.js for CRUD operations for Model Cat
+catCRUD(app);
