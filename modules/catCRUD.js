@@ -39,11 +39,15 @@ module.exports = app => {
     );
     req.body.original = path.join('media', 'thumbnails', req.file.filename);
     req.body.image = originalPath;
-    req.body.thumbnail = path.join('media', 'thumbnails', req.file.filename);
     imgProcess
       .resize(originalPath, thumbPath, 400, 400)
       .then(thumb => {
-        console.log('Resized image to format' + thumb);
+        console.log(thumb);
+        req.body.thumbnail = path.join(
+          'media',
+          'thumbnails',
+          req.file.filename
+        );
       })
       .catch(err => console.log('Error in resize function:' + err));
     req.body.time = Date.now();
@@ -108,11 +112,15 @@ module.exports = app => {
     );
     req.body.original = path.join('media', 'thumbnails', req.file.filename);
     req.body.image = originalPath;
-    req.body.thumbnail = path.join('media', 'thumbnails', req.file.filename);
     imgProcess
       .resize(originalPath, thumbPath, 400, 400)
       .then(thumb => {
-        console.log('Resized image to format' + thumb);
+        console.log(thumb);
+        req.body.thumbnail = path.join(
+          'media',
+          'thumbnails',
+          req.file.filename
+        );
       })
       .catch(err => console.log('Error in resize function:' + err));
     req.body.time = Date.now();

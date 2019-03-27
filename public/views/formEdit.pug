@@ -11,7 +11,10 @@ html(lang='en')
    h2 Alright! Lets edit this item
    h4 With id: #{ID}
    
-   form(id= 'catEditForm' action= '/edit' method= 'POST' enctype= 'multipart/form-data')  
+   form(id= 'catEditForm' action= '/edit' method= 'POST' enctype= 'multipart/form-data')
+    label Item ID
+    input(type='text' id='idGrab' name= 'id' value= ID readonly)    
+    br
     label Category
     input(type= 'text' name= 'category' value= category )
     <br>
