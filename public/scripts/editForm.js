@@ -10,7 +10,7 @@ subHead.innerHTML = myId;
 
 const editForm = () => {
   console.log('Edit Form Submitted');
-  const url = '/edit';
+  const url = '/cats/edit';
   console.log(url);
   // Using Fetch to send data to server
   fetch(url, {

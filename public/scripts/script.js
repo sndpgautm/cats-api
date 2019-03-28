@@ -1,16 +1,26 @@
 const filt = document.querySelector('#filter');
+const searchCats = document.querySelector('#mySearch');
 
 // fetching the picArray JSON file
-fetch('/allCats')
+fetch('/cats/all')
   .then(res => res.json())
   .then(data => {
     const picArr = data;
-    console.log(picArr);
 
     // filter array by category
     updateDOM(picArr);
     filt.addEventListener('change', () => updateDOM(picArr));
   });
+
+// Search by Title
+const searchTitle = () => {
+  fetch('/cats/all/' + searchCats.value)
+    .then(res => res.json())
+    .then(data => {
+      const picArr = data;
+      updateDOM(picArr);
+    });
+};
 
 // Selecting the Main COntainer in the DOM
 const pics = document.querySelector('.gallery');
@@ -45,24 +55,15 @@ const updateDOM = Arr => {
     // Function to delete the entry
     const del = e => {
       e.preventDefault();
-      fetch(btnDel.dataset.id, {
+      fetch('/cats/' + btnDel.dataset.id, {
         method: 'DELETE'
       });
       imgNode.style.display = 'none';
     };
 
     // Function to Edit the entry
-    /*    const editEntry = (e) => {
-    e.preventDefault();
-    console.log('Edit Button Clicked' + btnEdit.dataset.id);
-    fetch(btnEdit.dataset.id, {
-      method: 'PUT'
-    })
-  }; */
-
-    // Function to Edit the entry
     const editEntry = () => {
-      window.location.assign('/edit/' + element._id);
+      window.location.assign('/cats/edit/' + element._id);
     };
 
     // Function to create and render the image elements inside the container

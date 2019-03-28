@@ -7,7 +7,7 @@
   <title>Kittens</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="./style/style.css">
+  <link rel="stylesheet" href="./styles/style.css">
 
 </head>
 
@@ -21,13 +21,17 @@
       <option value="Girlfriend">Girlfriend</option>
     </select>
   </form>
+  <br>
+  
+    <label>Search by Title: </label>  
+    <input type="search" id="mySearch" placeholder= "Search by Title" onsearch = "searchTitle()">
+
   <ul class="gallery row">
 
   </ul>
 </div>
-<a href="./new">Add a cat</a>
+<a href="./cats/new">Add a cat</a>
 
-
-  <script src="./scripts/script.js"></script>
+<script src="./scripts/script.js"></script>
 </body>
-</html>
+</html> 
