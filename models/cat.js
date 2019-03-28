@@ -4,17 +4,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const catSchema = new Schema({
-    category : String,
-    title : String,
-    details : String,
-    coordinates : {
-        lat : Number,
-        lng : Number
-    },
-    original : String,
-    image : String,
-    thumbnail : String,
-    time : Date
+  category: String,
+  title: String,
+  details: String,
+  coordinates: {
+    lat: Number,
+    lng: Number
+  },
+  original: String,
+  image: String,
+  thumbnail: String,
+  time: String
 });
 
 // Virtual methods

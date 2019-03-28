@@ -1,6 +1,7 @@
 const Cat = require('../models/cat');
 const imgProcess = require('../modules/imgProcess.js');
 const path = require('path');
+const moment = require('moment');
 
 //Do all the database related crud operations here and call these functions in respective routes
 
@@ -52,7 +53,7 @@ exports.cat_create_post = (req, res) => {
       req.body.thumbnail = path.join('media', 'thumbnails', req.file.filename);
     })
     .catch(err => console.log('Error in resize function:' + err));
-  req.body.time = Date.now();
+  req.body.time = moment().format('LLLL');
   imgProcess
     .getSpot(path.join(originalPath))
     .then(coords => {
@@ -122,7 +123,7 @@ exports.cat_update_post = (req, res) => {
       req.body.thumbnail = path.join('media', 'thumbnails', req.file.filename);
     })
     .catch(err => console.log('Error in resize function:' + err));
-  req.body.time = Date.now();
+  req.body.time = moment().format('LLLL');
   imgProcess
     .getSpot(path.join(originalPath))
     .then(coords => {
