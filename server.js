@@ -1,4 +1,13 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
+const saltRound = 12; //okayish in 2019
+const myPwd = 'Secret123😉';
+//Use hasing only once when user creates password or changes it and store it in database
+// bcrypt.hash(myPwd, saltRound, (err, hash) => {
+//   // Store hash in the database
+//   console.log(hash);
+// });
+
 const express = require('express');
 const app = express();
 //For jelastic ssl use
@@ -18,7 +27,7 @@ passport.use(
   new LocalStrategy((username, password, done) => {
     if (
       username !== process.env.username ||
-      password !== process.env.password
+      !bcrypt.compareSync(password, process.env.password)
     ) {
       done(null, false, { message: 'Incorrect credentials.' });
       return;
