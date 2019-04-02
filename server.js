@@ -32,7 +32,7 @@ passport.use(
   new LocalStrategy((username, password, done) => {
     if (
       username !== process.env.username ||
-      password !== process.env.password
+      !bcrypt.compareSync(password, process.env.password)
     ) {
       console.log(
         'Never log that!!!!! ' +
