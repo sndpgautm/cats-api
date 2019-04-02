@@ -10,8 +10,13 @@ const myPwd = 'demoPass';
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+// Parse Application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// Parse application/JSON
+app.use(bodyParser.json());
 //For jelastic ssl use
-app.enable('trust proxy');
+// app.enable('trust proxy');
 const mongoose = require('mongoose');
 const pug = require('pug');
 const path = require('path');
@@ -27,22 +32,21 @@ passport.use(
   new LocalStrategy((username, password, done) => {
     if (
       username !== process.env.username ||
-      !bcrypt.compareSync(password, process.env.password)
+      password !== process.env.password
     ) {
-      console.log('print something');
       console.log(
-        'Password sent: ' +
+        'Never log that!!!!! ' +
+          username +
+          ' ' +
           password +
-          'process.env.password' +
+          ' ' +
+          process.env.username +
           process.env.password
       );
-      bcrypt.hash(password, saltRound, (err, hash) => {
-        console.log('hashed sent password: ' + hash);
-      });
       done(null, false, { message: 'Incorrect credentials.' });
       return;
     }
-    console.log('print something 2');
+    console.log('22 Never log that!!!!! ' + username + ' ' + password);
     return done(null, { user: username }); // return object usally contains something to identify the user.. returning password would be stupid
   })
 );
@@ -70,15 +74,15 @@ mongoose
 
 //For local dev disable https conenction
 //Only enable when delpolying to git and jelastic
-app.use((req, res, next) => {
-  if (req.secure) {
-    // request was via https, so do no special handling
-    next();
-  } else {
-    // request was via http, so redirect to https
-    res.redirect('https://' + req.headers.host + req.url);
-  }
-});
+// app.use((req, res, next) => {
+//   if (req.secure) {
+//     // request was via https, so do no special handling
+//     next();
+//   } else {
+//     // request was via http, so redirect to https
+//     res.redirect('https://' + req.headers.host + req.url);
+//   }
+// });
 
 //Athenticating using passport and postman to send login data
 app.post(
@@ -91,7 +95,7 @@ app.post(
 );
 
 app.get('/test', (req, res) => {
-  res.send('Login failed... Incorrect username and passowrd');
+  res.send('Login failed... Incorrect username and password');
 });
 
 // Handle routing
