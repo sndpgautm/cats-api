@@ -1,7 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const saltRound = 12; //okayish in 2019
-const myPwd = 'Secret123😉';
+const myPwd = 'demoPass';
 //Use hasing only once when user creates password or changes it and store it in database
 // bcrypt.hash(myPwd, saltRound, (err, hash) => {
 //   // Store hash in the database
@@ -30,6 +30,15 @@ passport.use(
       !bcrypt.compareSync(password, process.env.password)
     ) {
       done(null, false, { message: 'Incorrect credentials.' });
+      console.log(
+        'Password sent: ' +
+          password +
+          'process.env.password' +
+          process.env.password
+      );
+      bcrypt.hash(password, saltRound, (err, hash) => {
+        console.log('hashed sent password: ' + hash);
+      });
       return;
     }
     return done(null, { user: username }); // return object usally contains something to identify the user.. returning password would be stupid
