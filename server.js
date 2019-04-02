@@ -25,20 +25,20 @@ const LocalStrategy = require('passport-local').Strategy;
 //Passport Authentication with local username and password stored in .env file in jelastic server
 passport.use(
   new LocalStrategy((username, password, done) => {
+    console.log(
+      'Password sent: ' +
+        password +
+        'process.env.password' +
+        process.env.password
+    );
+    bcrypt.hash(password, saltRound, (err, hash) => {
+      console.log('hashed sent password: ' + hash);
+    });
     if (
       username !== process.env.username ||
       !bcrypt.compareSync(password, process.env.password)
     ) {
       done(null, false, { message: 'Incorrect credentials.' });
-      console.log(
-        'Password sent: ' +
-          password +
-          'process.env.password' +
-          process.env.password
-      );
-      bcrypt.hash(password, saltRound, (err, hash) => {
-        console.log('hashed sent password: ' + hash);
-      });
       return;
     }
     return done(null, { user: username }); // return object usally contains something to identify the user.. returning password would be stupid
